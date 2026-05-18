@@ -2,6 +2,42 @@ const timeElement = document.getElementById("time");
 const dateElement = document.getElementById("date");
 const rainElement = document.getElementById("rain");
 const cardElement = document.querySelector(".clock-card");
+const themeToggleButton = document.getElementById("theme-toggle");
+const themeToggleText = document.getElementById("theme-toggle-text");
+const rainRange = document.getElementById("rain-range");
+const rainValue = document.getElementById("rain-value");
+const infoToggleButton = document.getElementById("info-toggle");
+const controlInfoPanel = document.getElementById("control-info");
+const THEME_STORAGE_KEY = "wclock-theme";
+const DEFAULT_DROP_COUNT = Number(rainRange.value);
+
+function getPreferredTheme() {
+  const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+
+  if (savedTheme === "light" || savedTheme === "dark") {
+    return savedTheme;
+  }
+
+  return "dark";
+}
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+
+  document.documentElement.dataset.theme = theme;
+  themeToggleButton.setAttribute("aria-pressed", String(isDark));
+  themeToggleText.textContent = isDark ? "Dark Mode" : "Light Mode";
+}
+
+function toggleTheme() {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+
+  localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+  applyTheme(nextTheme);
+}
+
+applyTheme(getPreferredTheme());
+themeToggleButton.addEventListener("click", toggleTheme);
 
 function updateClock() {
   const now = new Date();
@@ -23,7 +59,6 @@ setInterval(updateClock, 1000);
 
 const drops = [];
 const splashes = [];
-const DROP_COUNT = 42;
 
 function randomBetween(min, max) {
   return Math.random() * (max - min) + min;
@@ -32,7 +67,7 @@ function randomBetween(min, max) {
 function createDrop() {
   const element = document.createElement("span");
   const streak = document.createElement("span");
-  const height = randomBetween(34, 92);
+  const height = randomBetween(56, 128);
   const angle = randomBetween(-18, -12);
   const speedY = randomBetween(190, 290);
 
@@ -55,7 +90,7 @@ function createDrop() {
 }
 
 function resetDrop(drop, spawnBelowTop = false) {
-  drop.height = randomBetween(34, 92);
+  drop.height = randomBetween(56, 128);
   drop.angle = randomBetween(0, 0);
   drop.speedY = randomBetween(190, 290);
   drop.speedX = Math.tan((drop.angle * Math.PI) / 180) * drop.speedY;
@@ -89,12 +124,31 @@ function createSplash(x, y) {
   }
 }
 
-function setupRain() {
-  for (let i = 0; i < DROP_COUNT; i += 1) {
+function syncDropCount(targetCount) {
+  while (drops.length < targetCount) {
     const drop = createDrop();
     resetDrop(drop, true);
+    renderDrop(drop);
     drops.push(drop);
   }
+
+  while (drops.length > targetCount) {
+    const drop = drops.pop();
+    drop.element.remove();
+  }
+}
+
+function setRainAmount(nextCount) {
+  rainRange.value = String(nextCount);
+  rainValue.textContent = String(nextCount);
+  syncDropCount(nextCount);
+}
+
+function toggleInfoPanel() {
+  const willOpen = controlInfoPanel.hidden;
+
+  controlInfoPanel.hidden = !willOpen;
+  infoToggleButton.setAttribute("aria-expanded", String(willOpen));
 }
 
 function renderDrop(drop) {
@@ -167,5 +221,11 @@ window.addEventListener("resize", () => {
   }
 });
 
-setupRain();
+rainRange.addEventListener("input", (event) => {
+  setRainAmount(Number(event.target.value));
+});
+
+infoToggleButton.addEventListener("click", toggleInfoPanel);
+
+setRainAmount(DEFAULT_DROP_COUNT);
 animateRain();

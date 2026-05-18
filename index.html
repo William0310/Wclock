@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Clock</title>
+    <title>Wclock</title>
+    <link rel="icon" type="image/png" href="./clock.png" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -12,9 +13,62 @@
       <section class="clock-card" aria-label="当前时间">
         <p class="clock-label">Current Time</p>
         <h1 class="clock-time" id="time">00:00:00</h1>
-        <p class="clock-date" id="date">正在加载日期...</p>
+        <p class="clock-date" id="date">Loading Information...</p>
       </section>
     </main>
+    <div class="control-dock">
+      <label class="rain-control" for="rain-range">
+        <span class="rain-control-label">
+          Rain
+          <span class="rain-control-value" id="rain-value">50</span>
+        </span>
+        <input
+          class="rain-control-slider"
+          id="rain-range"
+          type="range"
+          min="12"
+          max="90"
+          step="1"
+          value="50"
+          aria-label="调整雨量"
+        />
+      </label>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="切换暗色亮色模式"
+        aria-pressed="true"
+      >
+        <span class="theme-toggle-track">
+          <span class="theme-toggle-thumb"></span>
+        </span>
+        <span class="theme-toggle-text" id="theme-toggle-text">Dark Mode</span>
+      </button>
+      <button
+        class="info-toggle"
+        id="info-toggle"
+        type="button"
+        aria-label="显示控制信息"
+        aria-expanded="false"
+        aria-controls="control-info"
+      >
+        <svg
+          class="info-toggle-icon"
+          viewBox="0 0 24 24"
+          width="22"
+          height="22"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="8.5"></circle>
+          <circle cx="12" cy="8" r="1.15" fill="currentColor" stroke="none"></circle>
+          <path d="M12 11.2v5.2" fill="none" stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <div class="control-info" id="control-info" hidden>
+        <p class="control-info-text">Wclock V0.2Beta. Last Updated May/18/2026. Visit more work from me at Wphotographs.com Thank you for using this plugin.</p>
+      </div>
+    </div>
 
     <script src="./script.js"></script>
   </body>
