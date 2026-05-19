@@ -6,6 +6,8 @@ const themeToggleButton = document.getElementById("theme-toggle");
 const themeToggleText = document.getElementById("theme-toggle-text");
 const rainRange = document.getElementById("rain-range");
 const rainValue = document.getElementById("rain-value");
+const fullscreenToggleButton = document.getElementById("fullscreen-toggle");
+const fullscreenToggleText = document.getElementById("fullscreen-toggle-text");
 const infoToggleButton = document.getElementById("info-toggle");
 const controlInfoPanel = document.getElementById("control-info");
 const THEME_STORAGE_KEY = "wclock-theme";
@@ -144,6 +146,30 @@ function setRainAmount(nextCount) {
   syncDropCount(nextCount);
 }
 
+function updateFullscreenButton() {
+  const isFullscreen = Boolean(document.fullscreenElement);
+
+  fullscreenToggleButton.setAttribute("aria-pressed", String(isFullscreen));
+  fullscreenToggleText.textContent = isFullscreen ? "Exit Full" : "Fullscreen";
+}
+
+async function toggleFullscreen() {
+  if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) {
+    return;
+  }
+
+  if (document.fullscreenElement) {
+    await document.exitFullscreen();
+    return;
+  }
+
+  try {
+    await document.documentElement.requestFullscreen({ navigationUI: "hide" });
+  } catch (error) {
+    await document.documentElement.requestFullscreen();
+  }
+}
+
 function toggleInfoPanel() {
   const willOpen = controlInfoPanel.hidden;
 
@@ -224,6 +250,16 @@ window.addEventListener("resize", () => {
 rainRange.addEventListener("input", (event) => {
   setRainAmount(Number(event.target.value));
 });
+
+if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) {
+  fullscreenToggleButton.hidden = true;
+} else {
+  updateFullscreenButton();
+  fullscreenToggleButton.addEventListener("click", () => {
+    toggleFullscreen().catch(() => {});
+  });
+  document.addEventListener("fullscreenchange", updateFullscreenButton);
+}
 
 infoToggleButton.addEventListener("click", toggleInfoPanel);
 
