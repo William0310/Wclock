@@ -17,77 +17,99 @@
       </section>
     </main>
     <div class="control-dock">
-      <label class="rain-control" for="rain-range">
-        <span class="rain-control-label">
-          Rain
-          <span class="rain-control-value" id="rain-value">50</span>
-        </span>
-        <input
-          class="rain-control-slider"
-          id="rain-range"
-          type="range"
-          min="12"
-          max="90"
-          step="1"
-          value="50"
-          aria-label="调整雨量"
-        />
-      </label>
       <button
-        class="theme-toggle"
-        id="theme-toggle"
+        class="menu-toggle"
+        id="menu-toggle"
         type="button"
-        aria-label="切换暗色亮色模式"
-        aria-pressed="true"
-      >
-        <span class="theme-toggle-track">
-          <span class="theme-toggle-thumb"></span>
-        </span>
-        <span class="theme-toggle-text" id="theme-toggle-text">Dark Mode</span>
-      </button>
-      <button
-        class="fullscreen-toggle"
-        id="fullscreen-toggle"
-        type="button"
-        aria-label="切换沉浸全屏模式"
-        aria-pressed="false"
+        aria-label="打开控制菜单"
+        aria-expanded="false"
+        aria-controls="mobile-controls"
       >
         <svg
-          class="fullscreen-toggle-icon"
+          class="menu-toggle-icon"
           viewBox="0 0 24 24"
           width="18"
           height="18"
           aria-hidden="true"
         >
-          <path d="M8 4H4v4"></path>
-          <path d="M16 4h4v4"></path>
-          <path d="M20 16v4h-4"></path>
-          <path d="M4 16v4h4"></path>
+          <path d="M5 7.5h14"></path>
+          <path d="M5 12h14"></path>
+          <path d="M5 16.5h14"></path>
         </svg>
-        <span class="fullscreen-toggle-text" id="fullscreen-toggle-text">Fullscreen</span>
       </button>
-      <button
-        class="info-toggle"
-        id="info-toggle"
-        type="button"
-        aria-label="显示控制信息"
-        aria-expanded="false"
-        aria-controls="control-info"
-      >
-        <svg
-          class="info-toggle-icon"
-          viewBox="0 0 24 24"
-          width="22"
-          height="22"
-          aria-hidden="true"
+      <div class="mobile-controls" id="mobile-controls">
+        <label class="rain-control" for="rain-range">
+          <span class="rain-control-label">
+            Rain
+            <span class="rain-control-value" id="rain-value">50</span>
+          </span>
+          <input
+            class="rain-control-slider"
+            id="rain-range"
+            type="range"
+            min="12"
+            max="90"
+            step="1"
+            value="50"
+            aria-label="调整雨量"
+          />
+        </label>
+        <button
+          class="theme-toggle"
+          id="theme-toggle"
+          type="button"
+          aria-label="切换暗色亮色模式"
+          aria-pressed="true"
         >
-          <circle cx="12" cy="12" r="8.5"></circle>
-          <circle cx="12" cy="8" r="1.15" fill="currentColor" stroke="none"></circle>
-          <path d="M12 11.2v5.2" fill="none" stroke-linecap="round"></path>
-        </svg>
-      </button>
-      <div class="control-info" id="control-info" hidden>
-        <p class="control-info-text">Wclock V0.2.1Beta.  Visit more work from me at Wphotographs.com Thank you for using this plugin.</p>
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="theme-toggle-text" id="theme-toggle-text">Dark Mode</span>
+        </button>
+        <button
+          class="fullscreen-toggle"
+          id="fullscreen-toggle"
+          type="button"
+          aria-label="切换沉浸全屏模式"
+          aria-pressed="false"
+        >
+          <svg
+            class="fullscreen-toggle-icon"
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            aria-hidden="true"
+          >
+            <path d="M8 4H4v4"></path>
+            <path d="M16 4h4v4"></path>
+            <path d="M20 16v4h-4"></path>
+            <path d="M4 16v4h4"></path>
+          </svg>
+          <span class="fullscreen-toggle-text" id="fullscreen-toggle-text">Fullscreen</span>
+        </button>
+        <button
+          class="info-toggle"
+          id="info-toggle"
+          type="button"
+          aria-label="显示控制信息"
+          aria-expanded="false"
+          aria-controls="control-info"
+        >
+          <svg
+            class="info-toggle-icon"
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="8.5"></circle>
+            <circle cx="12" cy="8" r="1.15" fill="currentColor" stroke="none"></circle>
+            <path d="M12 11.2v5.2" fill="none" stroke-linecap="round"></path>
+          </svg>
+        </button>
+        <div class="control-info" id="control-info" hidden>
+          <p class="control-info-text">Wclock V0.2.1Beta. Visit more work from me at Wphotographs.com. Thank you for using this plugin.</p>
+        </div>
       </div>
     </div>
 

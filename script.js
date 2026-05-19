@@ -8,10 +8,14 @@ const rainRange = document.getElementById("rain-range");
 const rainValue = document.getElementById("rain-value");
 const fullscreenToggleButton = document.getElementById("fullscreen-toggle");
 const fullscreenToggleText = document.getElementById("fullscreen-toggle-text");
+const menuToggleButton = document.getElementById("menu-toggle");
+const mobileControls = document.getElementById("mobile-controls");
 const infoToggleButton = document.getElementById("info-toggle");
 const controlInfoPanel = document.getElementById("control-info");
+const controlDock = document.querySelector(".control-dock");
 const THEME_STORAGE_KEY = "wclock-theme";
 const DEFAULT_DROP_COUNT = Number(rainRange.value);
+const mobileMenuMediaQuery = window.matchMedia("(max-width: 767px)");
 
 function getPreferredTheme() {
   const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
@@ -177,6 +181,23 @@ function toggleInfoPanel() {
   infoToggleButton.setAttribute("aria-expanded", String(willOpen));
 }
 
+function setMobileMenuOpen(isOpen) {
+  controlDock.dataset.mobileOpen = String(isOpen);
+  menuToggleButton.setAttribute("aria-expanded", String(isOpen));
+  mobileControls.setAttribute("aria-hidden", String(!isOpen));
+}
+
+function syncMobileMenu() {
+  if (mobileMenuMediaQuery.matches) {
+    setMobileMenuOpen(controlDock.dataset.mobileOpen === "true");
+    return;
+  }
+
+  controlDock.dataset.mobileOpen = "false";
+  menuToggleButton.setAttribute("aria-expanded", "false");
+  mobileControls.removeAttribute("aria-hidden");
+}
+
 function renderDrop(drop) {
   drop.element.style.transform = `translate3d(${drop.x}px, ${drop.y}px, 0)`;
 }
@@ -251,6 +272,10 @@ rainRange.addEventListener("input", (event) => {
   setRainAmount(Number(event.target.value));
 });
 
+menuToggleButton.addEventListener("click", () => {
+  setMobileMenuOpen(controlDock.dataset.mobileOpen !== "true");
+});
+
 if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) {
   fullscreenToggleButton.hidden = true;
 } else {
@@ -262,6 +287,8 @@ if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) 
 }
 
 infoToggleButton.addEventListener("click", toggleInfoPanel);
+mobileMenuMediaQuery.addEventListener("change", syncMobileMenu);
 
 setRainAmount(DEFAULT_DROP_COUNT);
+syncMobileMenu();
 animateRain();
